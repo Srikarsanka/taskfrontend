@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Personal Productivity Dashboard</title>
+      <meta name="description" content="Track your daily habits, manage tasks, and boost productivity." />
+
+      <!-- Google Fonts -->
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet" />
+
+      <!-- Font Awesome 6 (Free CDN) -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+      <!-- Chart.js for Analytics -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <!-- Main Stylesheet -->
+      <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+      <!-- ══════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════════ -->
+      <header class="header">
+            <div class="header-inner">
+
+                  <!-- Logo -->
+                  <div class="logo">
+                        <i class="fa-solid fa-bolt logo-icon"></i>
+                        <h1>Productivity Dashboard</h1>
+                  </div>
+
+                  <!-- Actions -->
+                  <div class="header-actions">
+                        <!-- Dark Mode Toggle -->
+                        <button id="themeToggleBtn" class="btn-icon" title="Toggle Theme" aria-label="Toggle theme">
+                              <i id="themeIcon" class="fa-solid fa-sun"></i>
+                        </button>
+                        <!-- Notification Permission -->
+                        <button id="notifPermBtn" class="btn btn-outline" title="Enable Notifications">
+                              <i class="fa-solid fa-bell"></i>
+                              <span class="btn-label">Enable Alerts</span>
+                        </button>
+                  </div>
+
+            </div>
+      </header>
+
+      <!-- ══════════════════════════════════════════
+       MAIN
+  ════════════════════════════════════════════ -->
+      <main class="container">
+
+            <!-- ── Stats Grid ──────────────────────── -->
+            <section class="stats-grid" aria-label="Summary stats">
+                  <div class="stat-card">
+                        <div class="stat-icon-wrap accent">
+                              <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div class="stat-body">
+                              <p class="stat-label">Today's Progress</p>
+                              <p class="stat-value" id="progressText">0 / 0</p>
+                        </div>
+                  </div>
+                  <div class="stat-card">
+                        <div class="stat-icon-wrap warning">
+                              <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <div class="stat-body">
+                              <p class="stat-label">Streak</p>
+                              <p class="stat-value" id="streakText">0 days</p>
+                        </div>
+                  </div>
+                  <div class="stat-card">
+                        <div class="stat-icon-wrap success">
+                              <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="stat-body">
+                              <p class="stat-label">Completed</p>
+                              <p class="stat-value" id="completedText">0</p>
+                        </div>
+                  </div>
+                  <div class="stat-card">
+                        <div class="stat-icon-wrap danger">
+                              <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-body">
+                              <p class="stat-label">Pending</p>
+                              <p class="stat-value" id="pendingText">0</p>
+                        </div>
+                  </div>
+            </section>
+
+            <!-- ── Progress Bar ────────────────────── -->
+            <section class="progress-section" aria-label="Task progress">
+                  <div class="progress-header">
+                        <span class="section-label">
+                              <i class="fa-solid fa-chart-simple"></i> Daily Completion
+                        </span>
+                        <span id="progressPercent" class="progress-pct">0%</span>
+                  </div>
+                  <div class="progress-bar-track" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                        aria-valuemax="100" id="progressBarTrack">
+                        <div class="progress-bar-fill" id="progressBarFill"></div>
+                  </div>
+            </section>
+
+            <!-- ── Add Task ────────────────────────── -->
+            <section class="add-task-section" aria-label="Add new task">
+                  <h2 class="section-title">
+                        <i class="fa-solid fa-plus-circle"></i> Add a New Task
+                  </h2>
+                  <form id="addTaskForm" class="add-task-form" novalidate>
+                        <div class="input-wrap">
+                              <i class="fa-solid fa-pen input-icon"></i>
+                              <input type="text" id="taskInput" class="task-input"
+                                    placeholder="e.g. Read 20 pages of a book..." aria-label="New task name"
+                                    maxlength="200" autocomplete="off" />
+                        </div>
+                        <button type="submit" id="addTaskBtn" class="btn btn-primary">
+                              <i class="fa-solid fa-plus"></i>
+                              <span>Add Task</span>
+                        </button>
+                  </form>
+                  <p id="inputError" class="input-error" role="alert"></p>
+            </section>
+
+            <!-- ── Task List ───────────────────────── -->
+            <section class="task-section" aria-label="Task list">
+                  <div class="section-header">
+                        <h2 class="section-title">
+                              <i class="fa-solid fa-calendar-check"></i> Today's Tasks
+                        </h2>
+                        <div class="filter-tabs" role="tablist">
+                              <button class="filter-tab active" data-filter="all" id="filterAll" role="tab">All</button>
+                              <button class="filter-tab" data-filter="pending" id="filterPending"
+                                    role="tab">Pending</button>
+                              <button class="filter-tab" data-filter="completed" id="filterCompleted"
+                                    role="tab">Done</button>
+                        </div>
+                  </div>
+
+                  <!-- Loading Skeleton -->
+                  <div id="loadingState" class="loading-state">
+                        <div class="skeleton"></div>
+                        <div class="skeleton"></div>
+                        <div class="skeleton"></div>
+                  </div>
+
+                  <!-- Empty State -->
+                  <div id="emptyState" class="empty-state hidden">
+                        <i class="fa-solid fa-inbox empty-icon"></i>
+                        <p>No tasks here. Add one above!</p>
+                  </div>
+
+                  <!-- Task List -->
+                  <ul id="taskList" class="task-list" role="list"></ul>
+            </section>
+
+            <!-- ── Analytics ───────────────────────── -->
+            <section class="chart-section" aria-label="Weekly analytics">
+                  <div class="section-header">
+                        <h2 class="section-title">
+                              <i class="fa-solid fa-chart-bar"></i> Weekly Productivity
+                        </h2>
+                        <button id="refreshChartBtn" class="btn btn-ghost">
+                              <i class="fa-solid fa-arrows-rotate"></i>
+                              <span class="btn-label">Refresh</span>
+                        </button>
+                  </div>
+                  <div class="chart-wrapper">
+                        <canvas id="weeklyChart" aria-label="Weekly productivity chart"></canvas>
+                  </div>
+            </section>
+
+      </main>
+
+      <!-- ══════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════ -->
+      <footer class="footer">
+            <p>
+                  <i class="fa-solid fa-rocket"></i>
+                  Personal Productivity Dashboard &copy; <span id="footerYear"></span>
+            </p>
+      </footer>
+
+      <!-- Toast Container -->
+      <div id="toastContainer" class="toast-container" role="region" aria-live="polite"></div>
+
+      <!-- ══════════════════════════════════════════
+       FIREBASE SDKS
+  ════════════════════════════════════════════ -->
+      <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-messaging-compat.js"></script>
+
+      <!-- Main Script -->
+      <script src="script.js"></script>
+</body>
+
+</html>
