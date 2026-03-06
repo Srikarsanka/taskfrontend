@@ -16,7 +16,7 @@
    CONFIG
    ────────────────────────────────────────────────────────────── */
 // Base URL of the backend API — change this if your server runs on a different port
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://taskbackend-zle9.onrender.com";
 
 /* ──────────────────────────────────────────────────────────────
    STATE
