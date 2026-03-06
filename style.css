@@ -504,20 +504,7 @@ body {
       background: var(--bg-secondary);
 }
 
-/* Full-width button on very small phones */
-@media (max-width: 400px) {
-      .add-task-form {
-            flex-direction: column;
-      }
-
-      .input-wrap {
-            min-width: 0;
-      }
-
-      #addTaskBtn {
-            width: 100%;
-      }
-}
+/* Mobile form resizing handled in bottom media queries */
 
 .input-error {
       margin-top: 7px;
@@ -919,5 +906,107 @@ body {
 
       .chart-wrapper {
             aspect-ratio: 16 / 5;
+      }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE HELPERS — mobile phones
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+      /* Form inputs to stack */
+      .add-task-form {
+            flex-direction: column;
+      }
+
+      .input-wrap {
+            min-width: 100%;
+      }
+
+      #addTaskBtn {
+            width: 100%;
+      }
+
+      /* Reduce padding/gaps */
+      .container {
+            padding: 16px 12px 60px;
+            gap: 16px;
+      }
+
+      .stat-card {
+            padding: 12px 10px;
+            gap: 8px;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+      }
+
+      .stat-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+      }
+
+      .stat-value {
+            font-size: 1.1rem;
+      }
+
+      .stat-label {
+            font-size: 0.65rem;
+            text-align: center;
+      }
+
+      /* Header fixes */
+      .header-inner {
+            padding: 0 12px;
+            gap: 8px;
+      }
+
+      .logo {
+            gap: 6px;
+      }
+
+      .btn-outline {
+            padding: 6px 10px;
+            font-size: 0.75rem;
+      }
+
+      .btn-icon {
+            width: 34px;
+            height: 34px;
+            font-size: 0.9rem;
+      }
+
+      /* Task List fixes */
+      .task-item {
+            padding: 12px 10px;
+            gap: 8px;
+      }
+
+      .task-name {
+            font-size: 0.85rem;
+      }
+
+      .filter-tabs {
+            flex-wrap: wrap;
+            width: 100%;
+      }
+
+      .filter-tab {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            flex: 1;
+      }
+
+      .section-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+      }
+}
+
+@media (max-width: 360px) {
+      .stats-grid {
+            grid-template-columns: 1fr;
       }
 }
