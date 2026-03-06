@@ -423,7 +423,7 @@ notifPermBtn.addEventListener("click", async () => {
             body: JSON.stringify({ token })
           });
           
-          showToast("✅ Notifications enabled! You'll be reminded via push notification.", "success");
+          showToast("✅ Notifications enabled! You'll be reminded at 10 AM and 10 PM.", "success");
           notifPermBtn.innerHTML = '<i class="fa-solid fa-bell-slash"></i> <span class="btn-label">Alerts On</span>';
           notifPermBtn.disabled  = true;
         } else {
